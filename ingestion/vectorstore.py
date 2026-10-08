@@ -1,14 +1,13 @@
 from functools import lru_cache
 
 from langchain_chroma import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 PERSIST_DIR = "chroma_db"
 
 
 @lru_cache(maxsize=1)
 def get_embeddings():
-    # Cached so the model loads once, not on every question
     return HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
 
@@ -28,5 +27,4 @@ def load_vectorstore():
 
 
 def clear_vectorstore():
-    """Empty the database without deleting files (avoids Windows file locks)."""
     load_vectorstore().delete_collection()
